@@ -15,8 +15,8 @@ type Link struct {
 }
 
 // Parse : parse a html document into a slice of Links
-func Parse(r io.Reader) ([]Link, error) {
-	doc, err := html.Parse(r)
+func Parse(reader io.Reader) ([]Link, error) {
+	doc, err := html.Parse(reader)
 	if err != nil {
 		return nil, err
 	}
@@ -29,15 +29,15 @@ func Parse(r io.Reader) ([]Link, error) {
 	return links, nil
 }
 
-func buildLink(n *html.Node) Link {
+func buildLink(node *html.Node) Link {
 	var result Link
-	for _, attr := range n.Attr {
+	for _, attr := range node.Attr {
 		if attr.Key == "href" {
 			result.Href = attr.Val
 			break
 		}
 	}
-	result.Text = text(n)
+	result.Text = text(node)
 
 	return result
 }
